@@ -51,6 +51,11 @@ class CalculatorBrain {
         knownOps["√"] = Op.UnaryOperation("√", sqrt)
     }
     
+    // Clear the operation stack
+    func clearStack() {
+        opStack = [Op]()
+    }
+    
     func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
         return evaluate()
@@ -72,11 +77,13 @@ class CalculatorBrain {
             switch op {
             case .Operand(let operand):
                 return (operand, remainingOps)
+            // If we have only one operator ie square root, grab it and the next value
             case .UnaryOperation(_, let operation):
                 let operandEvaluation = evaluate(remainingOps)
                 if let operand = operandEvaluation.result {
                     return (operation(operand), operandEvaluation.remainingOps)
                 }
+            // These are +'s, -'s, *'s, /'s
             case .BinaryOperation(_, let operation):
                 let op1Evaluation = evaluate(remainingOps)
                 if let operand1 = op1Evaluation.result {
@@ -89,6 +96,11 @@ class CalculatorBrain {
         }
         
         return (nil, ops)
+    }
+    
+    // Convert the operation stack as a string and return it
+    func getStackAsString() -> String {
+        return "\(opStack)"
     }
     
     func evaluate() -> Double? {

@@ -54,6 +54,12 @@ class ViewController: UIViewController {
             displayValue = 0
         }
     }
+    
+    // Clear the calculator of the contents
+    @IBAction func clear(sender: UIButton) {
+        brain.clearStack()
+        displayValue = 0;
+    }
 
     // Adding a decimal point
     @IBAction func appendPeriod(sender: UIButton) {

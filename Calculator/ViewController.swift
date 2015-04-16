@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     
     var userIsInTheMiddleOfTypingANumber = false
     
+    var brain = CalculatorBrain()
+    
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
@@ -24,6 +26,35 @@ class ViewController: UIViewController {
         }
     }
     
+    // For our function operations
+    @IBAction func operate(sender: UIButton) {
+        let operation = sender.currentTitle!
+        
+        if userIsInTheMiddleOfTypingANumber {
+            enter()
+        }
+    
+        if let operation = sender.currentTitle {
+            if let result = brain.performOperation(operation) {
+                displayValue = result
+            } else {
+                displayValue = 0
+            }
+        }
+        
+    }
+    
+    // Clears out if the user is typin
+    @IBAction func enter() {
+        userIsInTheMiddleOfTypingANumber = false
+
+        if let result = brain.pushOperand(displayValue) {
+            displayValue = result
+        } else {
+            displayValue = 0
+        }
+    }
+
     // Adding a decimal point
     @IBAction func appendPeriod(sender: UIButton) {
         // Grab the numeric field
@@ -36,18 +67,7 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    
-    // Internal stack for calcuations
-    var operandStack = Array<Double>()
-    
-    // Clears out if the user is typin
-    @IBAction func enter() {
-        userIsInTheMiddleOfTypingANumber = false
-        operandStack.append(displayValue)
-        println("operandStack = \(operandStack)")
-    }
-    
+
     // convert the string to a double / return the string value
     var displayValue: Double {
         get {
@@ -59,14 +79,9 @@ class ViewController: UIViewController {
         }
     }
     
-    // For our function operations
-    @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
-        
-        if userIsInTheMiddleOfTypingANumber {
-            enter()
-        }
-        
+    
+
+    /*
         switch operation {
         case "×": performOperation({ (op1, op2) in return op1 * op2 })
             case "÷": performOperation({ (op1, op2) in return op2 / op1 })
@@ -76,7 +91,9 @@ class ViewController: UIViewController {
             default: break
         }
     }
+    */
 
+    /*
     // Verifies if the operation stack is valid
     // Takes a function, returns that value and then clears the screen
     func performOperation(operation: (Double) -> Double) {
@@ -92,4 +109,5 @@ class ViewController: UIViewController {
             enter()
         }
     }
+    */
 }

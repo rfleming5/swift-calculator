@@ -49,6 +49,8 @@ class CalculatorBrain {
         knownOps["+"] = Op.BinaryOperation("+") { $0 + $1 }
         knownOps["−"] = Op.BinaryOperation("−") { $1 - $0 }
         knownOps["√"] = Op.UnaryOperation("√", sqrt)
+        knownOps["sin"] = Op.UnaryOperation("sin", sin)
+        knownOps["cos"] = Op.UnaryOperation("cos", cos)
     }
     
     // Clear the operation stack
@@ -78,6 +80,7 @@ class CalculatorBrain {
             case .Operand(let operand):
                 return (operand, remainingOps)
             // If we have only one operator ie square root, grab it and the next value
+            // Ignorning the string by using '_'; see enum
             case .UnaryOperation(_, let operation):
                 let operandEvaluation = evaluate(remainingOps)
                 if let operand = operandEvaluation.result {

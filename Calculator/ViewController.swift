@@ -11,20 +11,11 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var displayOperationStack: UILabel!
     
     var userIsInTheMiddleOfTypingANumber = false
     
     var brain = CalculatorBrain()
-    
-    @IBAction func appendDigit(sender: UIButton) {
-        let digit = sender.currentTitle!
-        if userIsInTheMiddleOfTypingANumber {
-            display.text = display.text! + digit
-        } else {
-            display.text = digit
-            userIsInTheMiddleOfTypingANumber = true
-        }
-    }
     
     // For our function operations
     @IBAction func operate(sender: UIButton) {
@@ -44,7 +35,7 @@ class ViewController: UIViewController {
         
     }
     
-    // Clears out if the user is typin
+    // Clears out if the user is typing
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
 
@@ -59,6 +50,17 @@ class ViewController: UIViewController {
     @IBAction func clear(sender: UIButton) {
         brain.clearStack()
         displayValue = 0;
+    }
+
+    // Add numbers / digits
+    @IBAction func appendDigit(sender: UIButton) {
+        let digit = sender.currentTitle!
+        if userIsInTheMiddleOfTypingANumber {
+            display.text = display.text! + digit
+        } else {
+            display.text = digit
+            userIsInTheMiddleOfTypingANumber = true
+        }
     }
 
     // Adding a decimal point
@@ -81,6 +83,7 @@ class ViewController: UIViewController {
         }
         set {
             display.text = "\(newValue)"
+            displayOperationStack.text = brain.getStackAsString()
             userIsInTheMiddleOfTypingANumber = false
         }
     }

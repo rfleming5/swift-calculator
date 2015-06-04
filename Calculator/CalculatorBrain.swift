@@ -14,12 +14,15 @@ class CalculatorBrain {
     
     private enum Op: Printable { // A protocol that this enum implements this "printable"
         case Operand(Double)
+        case Constant(String, Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
         
         var description: String {
             get {
                 switch self {
+                case .Constant(let constant, let value):
+                    return "\(constant)"
                 case .Operand(let operand):
                     return "\(operand)"
                 case .UnaryOperation(let symbol,_):
@@ -51,6 +54,7 @@ class CalculatorBrain {
         knownOps["√"] = Op.UnaryOperation("√", sqrt)
         knownOps["sin"] = Op.UnaryOperation("sin", sin)
         knownOps["cos"] = Op.UnaryOperation("cos", cos)
+        knownOps["π"] = Op.Constant("π", M_PI)
     }
     
     // Clear the operation stack
@@ -79,6 +83,11 @@ class CalculatorBrain {
             switch op {
             case .Operand(let operand):
                 return (operand, remainingOps)
+            
+            // If have a single constant we will want to evaluate its value
+            case .Constant(_, let operand):
+                return (operand, remainingOps)
+                
             // If we have only one operator ie square root, grab it and the next value
             // Ignorning the string by using '_'; see enum
             case .UnaryOperation(_, let operation):

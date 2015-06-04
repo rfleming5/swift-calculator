@@ -32,7 +32,6 @@ class ViewController: UIViewController {
                 displayValue = 0
             }
         }
-        
     }
     
     // Clears out if the user is typing
@@ -52,27 +51,23 @@ class ViewController: UIViewController {
         displayValue = 0;
     }
 
-    // Add numbers / digits
-    @IBAction func appendDigit(sender: UIButton) {
+    ////// is being appened PI /////
+    // Add numbers / digits / constants
+    // Before: appendDigit
+    @IBAction func appendOperand(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
-            display.text = display.text! + digit
+            switch digit {
+            case ".":
+                if (display.text!.rangeOfString(".") == nil) {
+                    display.text = display.text! + digit
+                }
+            default:
+                display.text = display.text! + digit
+            }
         } else {
             display.text = digit
             userIsInTheMiddleOfTypingANumber = true
-        }
-    }
-
-    // Adding a decimal point
-    @IBAction func appendPeriod(sender: UIButton) {
-        // Grab the numeric field
-        let digit = sender.currentTitle!
-        
-        // If we have a period we want to append it
-        if userIsInTheMiddleOfTypingANumber {
-            if(display.text!.rangeOfString(".") == nil) {
-                display.text = display.text! + digit
-            }
         }
     }
 
@@ -87,36 +82,4 @@ class ViewController: UIViewController {
             userIsInTheMiddleOfTypingANumber = false
         }
     }
-    
-    
-
-    /*
-        switch operation {
-        case "×": performOperation({ (op1, op2) in return op1 * op2 })
-            case "÷": performOperation({ (op1, op2) in return op2 / op1 })
-            case "+": performOperation({ (op1, op2) in return op1 + op2 })
-            case "−": performOperation({ (op1, op2) in return op2 - op1 })
-            case "√": performOperation({ (op1) in sqrt(op1) })
-            default: break
-        }
-    }
-    */
-
-    /*
-    // Verifies if the operation stack is valid
-    // Takes a function, returns that value and then clears the screen
-    func performOperation(operation: (Double) -> Double) {
-        if operandStack.count >= 1 {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-        }
-    }
-
-    func performOperation(operation: (Double, Double) -> Double) {
-        if operandStack.count >= 2 {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
-        }
-    }
-    */
 }
